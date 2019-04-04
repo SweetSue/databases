@@ -1,0 +1,326 @@
+CREATE DATABASE world;
+
+CREATE TABLE IF NOT EXISTS country (
+    Country_id INT AUTO_INCREMENT,
+    Country_name VARCHAR(255) NOT NULL,
+    Continent VARCHAR(255) NOT NULL,
+    Country_surface INT NOT NULL,
+    Country_population INT NOT NULL,
+    PRIMARY KEY (Country_id)
+) ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS city (
+    City_id INT AUTO_INCREMENT,
+    City_name VARCHAR(255) NOT NULL,
+    City_population INT NOT NULL,
+    FK_country INT NOT NULL,
+    PRIMARY KEY (City_id),
+    FOREIGN KEY (FK_country)
+    REFERENCES country(Country_id)
+) ENGINE=INNODB;
+
+mysql> INSERT INTO country (Country_name, Continent, Country_surface, Country_population)
+    -> VALUES
+    -> ('China', 'Asia', 9596961, 1396740000),
+    -> ('USA', 'Americas', 9525067, 328972000),
+    -> ('India', 'Asia', 3287263, 1345520000),
+    -> ('France', 'Europe', 640679, 66989000),
+    -> ('Italy', 'Europe', 301339, 60375749),
+    -> ('Thailand', 'Asia', 513120, 66347555),
+    -> ('Netherlands', 'Europe', 41850, 17309200),
+    -> ('Greece', 'Europe', 131990, 10741165),
+    -> ('Brazil', 'Americas', 8515767, 209729000),
+    -> ('Ethiopia', 'Africa', 1104300, 98665000),
+    -> ('Morocco', 'Africa', 446550, 34980000),
+    -> ('Sweden', 'Europe', 450295, 10238627),
+    -> ('Australia', 'Oceania', 7692024, 25312900),
+    -> ('Mexico', 'Americas', 1964375, 126577691),
+    -> ('Germany', 'Europe', 357114, 82979100),
+    -> ('Russia', 'Europe', 17098246, 146793744),
+    -> ('Guinea', 'Africa', 245857, 12218357),
+    -> ('Finland', 'Europe', 338424, 5522018);
+Query OK, 18 rows affected (0.01 sec)
+Records: 18  Duplicates: 0  Warnings: 0
+
+mysql> select * from country;
++------------+--------------+-----------+-----------------+--------------------+
+| Country_id | Country_name | Continent | Country_surface | Country_population |
++------------+--------------+-----------+-----------------+--------------------+
+|          1 | China        | Asia      |         9596961 |         1396740000 |
+|          2 | USA          | Americas  |         9525067 |          328972000 |
+|          3 | India        | Asia      |         3287263 |         1345520000 |
+|          4 | France       | Europe    |          640679 |           66989000 |
+|          5 | Italy        | Europe    |          301339 |           60375749 |
+|          6 | Thailand     | Asia      |          513120 |           66347555 |
+|          7 | Netherlands  | Europe    |           41850 |           17309200 |
+|          8 | Greece       | Europe    |          131990 |           10741165 |
+|          9 | Brazil       | Americas  |         8515767 |          209729000 |
+|         10 | Ethiopia     | Africa    |         1104300 |           98665000 |
+|         11 | Morocco      | Africa    |          446550 |           34980000 |
+|         12 | Sweden       | Europe    |          450295 |           10238627 |
+|         13 | Australia    | Oceania   |         7692024 |           25312900 |
+|         14 | Mexico       | Americas  |         1964375 |          126577691 |
+|         15 | Germany      | Europe    |          357114 |           82979100 |
+|         16 | Russia       | Europe    |        17098246 |          146793744 |
+|         17 | Guinea       | Africa    |          245857 |           12218357 |
+|         18 | Finland      | Europe    |          338424 |            5522018 |
++------------+--------------+-----------+-----------------+--------------------+
+
+
+mysql> INSERT INTO city (City_name, City_population, FK_country)
+    -> VALUES
+    -> ('Mexico City', 8875000, 14),
+    -> ('Beijing', 20693000, 1),
+    -> ('Paris', 2241346, 4),
+    -> ('Stockholm', 1515017, 12),
+    -> ('Helsinki', 6355910, 18),
+    -> ('Rome', 2868104, 5),
+    -> ('Conakry', 1399981, 17),
+    -> ('Rabat', 1789635, 11),
+    -> ('Berlin', 3520000, 15),
+    -> ('Moscow', 11541000, 16),
+    -> ('Canberra', 354644, 13),
+    -> ('Athens', 3090508, 8),
+    -> ('Addis Ababa', 3040740, 10),
+    -> ('Amsterdam', 855965, 7),
+    -> ('New Delhi', 16787949, 3),
+    -> ('Bangkok', 8249117, 6),
+    -> ('Toulouse', 471941, 4),
+    -> ('Eindhoven', 209620, 7),
+    -> ('New Orleans', 393292, 2);
+Query OK, 19 rows affected (0.00 sec)
+Records: 19  Duplicates: 0  Warnings: 0
+
+mysql> select * from city;
++---------+-------------+-----------------+------------+
+| City_id | City_name   | City_population | FK_country |
++---------+-------------+-----------------+------------+
+|       1 | Mexico City |         8875000 |         14 |
+|       2 | Beijing     |        20693000 |          1 |
+|       3 | Paris       |         2241346 |          4 |
+|       4 | Stockholm   |         1515017 |         12 |
+|       5 | Helsinki    |         6355910 |         18 |
+|       6 | Rome        |         2868104 |          5 |
+|       7 | Conakry     |         1399981 |         17 |
+|       8 | Rabat       |         1789635 |         11 |
+|       9 | Berlin      |         3520000 |         15 |
+|      10 | Moscow      |        11541000 |         16 |
+|      11 | Canberra    |          354644 |         13 |
+|      12 | Athens      |         3090508 |          8 |
+|      13 | Addis Ababa |         3040740 |         10 |
+|      14 | Amsterdam   |          855965 |          7 |
+|      15 | New Delhi   |        16787949 |          3 |
+|      16 | Bangkok     |         8249117 |          6 |
+|      17 | Toulouse    |          471941 |          4 |
+|      18 | Eindhoven   |          209620 |          7 |
+|      19 | New Orleans |          393292 |          2 |
++---------+-------------+-----------------+------------+
+19 rows in set (0.00 sec)
+mysql> SELECT
+    -> Country_name,
+    -> Country_population
+    -> FROM
+    -> country
+    -> WHERE
+    -> Country_population > 8000000
+    -> ORDER BY
+    -> Country_population DESC;
++--------------+--------------------+
+| Country_name | Country_population |
++--------------+--------------------+
+| China        |         1396740000 |
+| India        |         1345520000 |
+| USA          |          328972000 |
+| Brazil       |          209729000 |
+| Russia       |          146793744 |
+| Mexico       |          126577691 |
+| Ethiopia     |           98665000 |
+| Germany      |           82979100 |
+| France       |           66989000 |
+| Thailand     |           66347555 |
+| Italy        |           60375749 |
+| Morocco      |           34980000 |
+| Australia    |           25312900 |
+| Netherlands  |           17309200 |
+| Guinea       |           12218357 |
+| Greece       |           10741165 |
+| Sweden       |           10238627 |
++--------------+--------------------+
+17 rows in set (0.00 sec)
+
+SELECT Country_name, LOCATE('land', Country_name) 
+FROM country 
+WHERE locate('land',Country_name)>0;
++--------------+------------------------------+
+| Country_name | LOCATE('land', Country_name) |
++--------------+------------------------------+
+| Thailand     |                            5 |
+| Netherlands  |                            7 |
+| Finland      |                            4 |
++--------------+------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT
+    -> City_name,
+    -> City_population
+    -> FROM
+    -> city
+    -> WHERE
+    -> City_population > 500000 AND City_population < 1000000
+    -> ORDER BY
+    -> City_population DESC;
++-----------+-----------------+
+| City_name | City_population |
++-----------+-----------------+
+| Amsterdam |          855965 |
++-----------+-----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT
+    -> Country_name,
+    -> Continent
+    -> FROM
+    -> country
+    -> WHERE
+    -> Continent = 'Europe'
+    -> ORDER BY
+    -> Country_name ASC;
++--------------+-----------+
+| Country_name | Continent |
++--------------+-----------+
+| Finland      | Europe    |
+| France       | Europe    |
+| Germany      | Europe    |
+| Greece       | Europe    |
+| Italy        | Europe    |
+| Netherlands  | Europe    |
+| Russia       | Europe    |
+| Sweden       | Europe    |
++--------------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT
+    -> Country_name,
+    -> Country_surface
+    -> FROM
+    -> country
+    -> ORDER BY
+    -> Country_surface DESC;
++--------------+-----------------+
+| Country_name | Country_surface |
++--------------+-----------------+
+| Russia       |        17098246 |
+| China        |         9596961 |
+| USA          |         9525067 |
+| Brazil       |         8515767 |
+| Australia    |         7692024 |
+| India        |         3287263 |
+| Mexico       |         1964375 |
+| Ethiopia     |         1104300 |
+| France       |          640679 |
+| Thailand     |          513120 |
+| Sweden       |          450295 |
+| Morocco      |          446550 |
+| Germany      |          357114 |
+| Finland      |          338424 |
+| Italy        |          301339 |
+| Guinea       |          245857 |
+| Greece       |          131990 |
+| Netherlands  |           41850 |
++--------------+-----------------+
+18 rows in set (0.00 sec)
+
+mysql> SELECT
+    -> City_name,
+    -> FK_country
+    -> FROM
+    -> city
+    -> WHERE
+    -> FK_country = 7
+    -> ORDER BY
+    -> City_name ASC;
++-----------+------------+
+| City_name | FK_country |
++-----------+------------+
+| Amsterdam |          7 |
+| Eindhoven |          7 |
++-----------+------------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO city (City_name, City_population, FK_country)
+    -> VALUES
+    -> ('Rotterdam', 623652, 7);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT
+    -> City_name,
+    -> City_population
+    -> FROM
+    -> city
+    -> WHERE
+    -> City_name = 'Rotterdam';
++-----------+-----------------+
+| City_name | City_population |
++-----------+-----------------+
+| Rotterdam |          623652 |
++-----------+-----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT
+    -> Country_name,
+    -> Country_surface
+    -> FROM
+    -> country
+    -> ORDER BY
+    -> Country_surface DESC
+    -> LIMIT 10;
++--------------+-----------------+
+| Country_name | Country_surface |
++--------------+-----------------+
+| Russia       |        17098246 |
+| China        |         9596961 |
+| USA          |         9525067 |
+| Brazil       |         8515767 |
+| Australia    |         7692024 |
+| India        |         3287263 |
+| Mexico       |         1964375 |
+| Ethiopia     |         1104300 |
+| France       |          640679 |
+| Thailand     |          513120 |
++--------------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT
+    -> City_name,
+    -> City_population
+    -> FROM
+    -> city
+    -> ORDER BY
+    -> City_population DESC
+    -> LIMIT 10;
++-------------+-----------------+
+| City_name   | City_population |
++-------------+-----------------+
+| Beijing     |        20693000 |
+| New Delhi   |        16787949 |
+| Moscow      |        11541000 |
+| Mexico City |         8875000 |
+| Bangkok     |         8249117 |
+| Helsinki    |         6355910 |
+| Berlin      |         3520000 |
+| Athens      |         3090508 |
+| Addis Ababa |         3040740 |
+| Rome        |         2868104 |
++-------------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT SUM(Country_population) AS "These Countries Total Population"
+    -> FROM country;
++------------------+
+| Total Population |
++------------------+
+|       4046011106 |
++------------------+
+1 row in set (0.00 sec)
+
+But! Total World Population: 7600000000;
