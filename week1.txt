@@ -1,5 +1,7 @@
+// I.1. create a database world
 CREATE DATABASE world;
 
+// I.2. create a table country
 CREATE TABLE IF NOT EXISTS country (
     Country_id INT AUTO_INCREMENT,
     Country_name VARCHAR(255) NOT NULL,
@@ -9,6 +11,7 @@ CREATE TABLE IF NOT EXISTS country (
     PRIMARY KEY (Country_id)
 ) ENGINE=INNODB;
 
+// I.3. create a table city 
 CREATE TABLE IF NOT EXISTS city (
     City_id INT AUTO_INCREMENT,
     City_name VARCHAR(255) NOT NULL,
@@ -19,6 +22,7 @@ CREATE TABLE IF NOT EXISTS city (
     REFERENCES country(Country_id)
 ) ENGINE=INNODB;
 
+// I.4. Insert 10-20 rows in country table with relevant fields
 mysql> INSERT INTO country (Country_name, Continent, Country_surface, Country_population)
     -> VALUES
     -> ('China', 'Asia', 9596961, 1396740000),
@@ -42,6 +46,7 @@ mysql> INSERT INTO country (Country_name, Continent, Country_surface, Country_po
 Query OK, 18 rows affected (0.01 sec)
 Records: 18  Duplicates: 0  Warnings: 0
 
+// Display table
 mysql> select * from country;
 +------------+--------------+-----------+-----------------+--------------------+
 | Country_id | Country_name | Continent | Country_surface | Country_population |
@@ -66,7 +71,7 @@ mysql> select * from country;
 |         18 | Finland      | Europe    |          338424 |            5522018 |
 +------------+--------------+-----------+-----------------+--------------------+
 
-
+// I.4.1 Insert 10-20 rows in city table with relevant fields
 mysql> INSERT INTO city (City_name, City_population, FK_country)
     -> VALUES
     -> ('Mexico City', 8875000, 14),
@@ -91,6 +96,7 @@ mysql> INSERT INTO city (City_name, City_population, FK_country)
 Query OK, 19 rows affected (0.00 sec)
 Records: 19  Duplicates: 0  Warnings: 0
 
+// Display table
 mysql> select * from city;
 +---------+-------------+-----------------+------------+
 | City_id | City_name   | City_population | FK_country |
@@ -116,6 +122,8 @@ mysql> select * from city;
 |      19 | New Orleans |          393292 |          2 |
 +---------+-------------+-----------------+------------+
 19 rows in set (0.00 sec)
+
+// 1. Display the names of countries with population greater than 8 million
 mysql> SELECT
     -> Country_name,
     -> Country_population
@@ -148,6 +156,7 @@ mysql> SELECT
 +--------------+--------------------+
 17 rows in set (0.00 sec)
 
+// 2. Display the names of countries that have “land” in their names
 SELECT Country_name, LOCATE('land', Country_name) 
 FROM country 
 WHERE locate('land',Country_name)>0;
@@ -160,6 +169,7 @@ WHERE locate('land',Country_name)>0;
 +--------------+------------------------------+
 3 rows in set (0.00 sec)
 
+// 3. Display the names of the cities with population in between 500,000 and 1 million
 mysql> SELECT
     -> City_name,
     -> City_population
@@ -176,6 +186,26 @@ mysql> SELECT
 +-----------+-----------------+
 1 row in set (0.00 sec)
 
+// Other way to do it
+mysql> SELECT
+    -> City_name,
+    -> City_population
+    -> FROM
+    -> city
+    -> WHERE
+    -> City_population BETWEEN 500000 AND 1000000
+    -> ORDER BY
+    -> City_population DESC;
++-----------+-----------------+
+| City_name | City_population |
++-----------+-----------------+
+| Amsterdam |          855965 |
+| Rotterdam |          623652 |
++-----------+-----------------+
+2 rows in set (0.00 sec)
+
+
+// 4. Display the name of all the countries on the continent ‘Europe’
 mysql> SELECT
     -> Country_name,
     -> Continent
@@ -199,6 +229,8 @@ mysql> SELECT
 +--------------+-----------+
 8 rows in set (0.00 sec)
 
+
+// 5. Display a list of all the countries in the descending order of their surface areas
 mysql> SELECT
     -> Country_name,
     -> Country_surface
@@ -230,6 +262,7 @@ mysql> SELECT
 +--------------+-----------------+
 18 rows in set (0.00 sec)
 
+// 6. Display the names of all the cities in the Netherlands
 mysql> SELECT
     -> City_name,
     -> FK_country
@@ -247,11 +280,13 @@ mysql> SELECT
 +-----------+------------+
 2 rows in set (0.00 sec)
 
+// 7. Display the population of Rotterdam
+// add 'Rotterdam' to city
 mysql> INSERT INTO city (City_name, City_population, FK_country)
     -> VALUES
     -> ('Rotterdam', 623652, 7);
 Query OK, 1 row affected (0.01 sec)
-
+// Display the population of Rotterdam
 mysql> SELECT
     -> City_name,
     -> City_population
@@ -266,6 +301,7 @@ mysql> SELECT
 +-----------+-----------------+
 1 row in set (0.00 sec)
 
+//8. Display the top 10 countries by Surface Area
 mysql> SELECT
     -> Country_name,
     -> Country_surface
@@ -290,6 +326,7 @@ mysql> SELECT
 +--------------+-----------------+
 10 rows in set (0.00 sec)
 
+// 9. Display the top 10 most populated cities
 mysql> SELECT
     -> City_name,
     -> City_population
@@ -314,6 +351,8 @@ mysql> SELECT
 +-------------+-----------------+
 10 rows in set (0.00 sec)
 
+// 10. What is the population of the world ?
+// Diplay the total population from this database
 mysql> SELECT SUM(Country_population) AS "These Countries Total Population"
     -> FROM country;
 +------------------+
@@ -323,4 +362,35 @@ mysql> SELECT SUM(Country_population) AS "These Countries Total Population"
 +------------------+
 1 row in set (0.00 sec)
 
-But! Total World Population: 7600000000;
+// But! Total World Population: 7600000000;
+
+// *------------------ OTHER TESTS -------------------
+// Add column
+mysql> ALTER TABLE city
+    -> ADD COLUMN City_newcol INT AFTER FK_country;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+// Delete column
+mysql> ALTER TABLE city
+    -> DROP COLUMN City_newcol;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+// 6. OTHER WAY TO DO IT: Display the names of all the cities in the Netherlands
+SELECT City_name from city
+INNER JOIN country on city.FK_country = country.Country_id
+where country.Country_name = 'Netherlands';
+
+mysql> SELECT City_name from city
+    -> INNER JOIN country on city.FK_country = country.Country_id
+    -> where country.Country_name = 'Netherlands';
++-----------+
+| City_name |
++-----------+
+| Amsterdam |
+| Eindhoven |
+| Rotterdam |
++-----------+
+3 rows in set (0.00 sec)
+
