@@ -117,7 +117,7 @@ mysql> SELECT COUNT(*) FROM city
 
 
 // 5. List all the continents with the number of languages spoken in each continent
-mysql> SELECT DISTINCT country.Continent, COUNT(DISTINCT countrylanguage.Language) AS 'Number of Languages' FROM country
+mysql> SELECT country.Continent, COUNT(DISTINCT countrylanguage.Language) AS 'Number of Languages' FROM country
     -> JOIN countrylanguage on country.Code = countrylanguage.CountryCode
     -> GROUP BY Continent
     -> ORDER BY COUNT(countrylanguage.Language) DESC;
@@ -131,7 +131,8 @@ mysql> SELECT DISTINCT country.Continent, COUNT(DISTINCT countrylanguage.Languag
 | Oceania       |                  43 |
 | South America |                  21 |
 +---------------+---------------------+
-6 rows in set (0.01 sec)
+6 rows in set (0.00 sec)
+
 
 
 
