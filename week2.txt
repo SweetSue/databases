@@ -110,30 +110,28 @@ mysql> SELECT COUNT(*) FROM city
 +----------+
 1 row in set (0.01 sec)
 
+
 // 4. Are there any countries that have 
 // A) Same official language  B) Same region 
 // If yes, display those countries. If no, display TRUE or FALSE
 
-// 5. List all the continents with the number of languages spoken in each continent
 
-mysql> SELECT DISTINCT Continent, COUNT(country.Code) AS 'Number of Languages'
-    -> FROM country
-    -> JOIN countrylanguage
-    -> ON country.Code = countrylanguage.CountryCode
+// 5. List all the continents with the number of languages spoken in each continent
+mysql> SELECT DISTINCT country.Continent, COUNT(DISTINCT countrylanguage.Language) AS 'Number of Languages' FROM country
+    -> JOIN countrylanguage on country.Code = countrylanguage.CountryCode
     -> GROUP BY Continent
-    -> ORDER BY COUNT(Code) DESC;
+    -> ORDER BY COUNT(countrylanguage.Language) DESC;
 +---------------+---------------------+
 | Continent     | Number of Languages |
 +---------------+---------------------+
-| Africa        |                 310 |
-| Asia          |                 239 |
-| Europe        |                 202 |
-| North America |                 109 |
-| Oceania       |                  82 |
-| South America |                  42 |
+| Africa        |                 215 |
+| Asia          |                 138 |
+| Europe        |                  62 |
+| North America |                  43 |
+| Oceania       |                  43 |
+| South America |                  21 |
 +---------------+---------------------+
-6 rows in set (0.00 sec)
-// Is this right?
+6 rows in set (0.01 sec)
 
 
 
