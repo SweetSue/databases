@@ -100,14 +100,14 @@ mysql> SELECT DISTINCT countrylanguage.Language FROM countrylanguage
 
 // 3. Find the number of cities in which language Z is spoken (Accept Z from user)
 // Here we have to assume that the language spoken in a country is spoken in all this country's cities (far from true)
-mysql> SELECT city.Name, COUNT(*) FROM city
-    ->     JOIN countrylanguage on city.CountryCode = countrylanguage.CountryCode
-    ->     WHERE countrylanguage.Language = 'Basque';
-+--------+----------+
-| Name   | COUNT(*) |
-+--------+----------+
-| Madrid |       59 |
-+--------+----------+
+mysql> SELECT COUNT(*) FROM city
+    -> JOIN countrylanguage on city.CountryCode = countrylanguage.CountryCode
+    -> WHERE countrylanguage.Language = 'English';
++----------+
+| COUNT(*) |
++----------+
+|      823 |
++----------+
 1 row in set (0.01 sec)
 
 // 4. Are there any countries that have 
