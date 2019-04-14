@@ -115,6 +115,39 @@ mysql> SELECT COUNT(*) FROM city
 // A) Same official language  B) Same region 
 // If yes, display those countries. If no, display TRUE or FALSE
 
+mysql> SELECT c.Name, c.Region, cl.Language
+    -> FROM country c
+    -> JOIN countrylanguage cl
+    -> ON c.Code = cl.CountryCode
+    -> WHERE cl.IsOfficial = 'T'
+    -> ORDER BY c.Region, cl.Language, c.Name
+    -> LIMIT 20;
++-------------------------+---------------------------+------------+
+| Name                    | Region                    | Language   |
++-------------------------+---------------------------+------------+
+| Australia               | Australia and New Zealand | English    |
+| Christmas Island        | Australia and New Zealand | English    |
+| Cocos (Keeling) Islands | Australia and New Zealand | English    |
+| New Zealand             | Australia and New Zealand | English    |
+| Norfolk Island          | Australia and New Zealand | English    |
+| Estonia                 | Baltic Countries          | Estonian   |
+| Latvia                  | Baltic Countries          | Latvian    |
+| Lithuania               | Baltic Countries          | Lithuanian |
+| Ireland                 | British Islands           | English    |
+| United Kingdom          | British Islands           | English    |
+| Ireland                 | British Islands           | Irish      |
+| Aruba                   | Caribbean                 | Dutch      |
+| Netherlands Antilles    | Caribbean                 | Dutch      |
+| Anguilla                | Caribbean                 | English    |
+| Antigua and Barbuda     | Caribbean                 | English    |
+| Barbados                | Caribbean                 | English    |
+| Cayman Islands          | Caribbean                 | English    |
+| Montserrat              | Caribbean                 | English    |
+| Saint Kitts and Nevis   | Caribbean                 | English    |
+| Saint Lucia             | Caribbean                 | English    |
++-------------------------+---------------------------+------------+
+20 rows in set (0.00 sec)
+
 
 // 5. List all the continents with the number of languages spoken in each continent
 mysql> SELECT country.Continent, COUNT(DISTINCT countrylanguage.Language) AS 'Number of Languages' FROM country
@@ -132,6 +165,8 @@ mysql> SELECT country.Continent, COUNT(DISTINCT countrylanguage.Language) AS 'Nu
 | South America |                  21 |
 +---------------+---------------------+
 6 rows in set (0.00 sec)
+
+
 
 
 
